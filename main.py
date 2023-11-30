@@ -61,9 +61,12 @@ for i in range(len(spy_930)):
     diff = spy_1030[i] - spy_930[i]
     spy930_1030_difference.append(diff)
 
-for i in range(len(spy930_1030_difference)):
-    if spy930_1030_difference[i] <= -1:
-        trades.append(spy930_1030_difference[i])
+#Finding the days where spy dropped a dollar from 9:30 to 10:30 and enter those into a new list
+days_to_hold = []
+for days in range(len(spy930_1030_difference)):
+    if spy930_1030_difference[days] <= -1:
+        trades.append(spy930_1030_difference[days])
+        days_to_hold.append(days)
 
 # print('difference: ', spy830_930_difference[0])
 print('Amount of differences:', len(spy930_1030_difference))
@@ -78,10 +81,10 @@ loss_streak = []
 win_streak = []
 win_streak_counter = 0
 loss_steak_counter = 0
-days = 2
+added_days = 3
 
-for i in range(len(trades)):
-    dif = (spy_1030[i+days]-spy_930[i])
+for day in days_to_hold:
+    dif = (spy_1030[day+added_days]-spy_930[day])
     if float(dif) >= 1.00:
         wins_profit += dif * 100
 
