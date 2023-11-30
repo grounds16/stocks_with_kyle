@@ -72,7 +72,7 @@ for days in range(len(spy930_1030_difference)):
 print('Amount of differences:', len(spy930_1030_difference))
 print('Total trades:', len(trades))
 
-#looping through the dif list to find a startegy
+#looping through the days_to_hold list to find a startegy
 wins = 0
 losses = 0
 wins_profit = 0
@@ -81,7 +81,7 @@ loss_streak = []
 win_streak = []
 win_streak_counter = 0
 loss_steak_counter = 0
-added_days = 3
+added_days = 2
 
 for day in days_to_hold:
     dif = (spy_1030[day+added_days]-spy_930[day])
