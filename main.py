@@ -1,22 +1,18 @@
 import yfinance as yf
 import datetime as dt
 
+#ticker varibales
 ticker = 'AMZN' #We can search for any ticker using this variable
 yf_ticker = yf.Ticker(ticker)
+
+#time varibales
 start_year = 2023
 start_day = 1
 start_month = 1
 start_hour = 9
 start_min = 30
 start_date = dt.datetime(start_year, start_month, start_day, start_hour, start_min)
-
-print(f"Stock: {ticker}")
-print('---------------------------------------------')
-# get historical market data
-ticker_history = yf_ticker.history(interval="1h", start=start_date, end=dt.datetime.now())
-print(f"Amount of prices: {len(ticker_history)}")
-
-new_dic = {}
+time_list = ["09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30"]
 time_930 = []
 time_1030 = []
 time_1130 = []
@@ -25,8 +21,36 @@ time_1330 = []
 time_1430 = []
 time_1530 = []
 
+#set times we want to search for during our algo
+earlier_time = time_930
+later_time = time_1030
 
-time_list = ["09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30"]
+
+#wins/losses varibables
+wins = 0
+losses = 0
+wins_profit = 0
+lost_money = 0
+loss_streak = []
+win_streak = []
+win_streak_counter = 0
+loss_steak_counter = 0
+
+#trade varibales
+added_days = 2
+new_dic = {}
+difference = []
+trades = []
+days_to_hold = []
+
+
+
+print(f"Stock: {ticker}")
+print('---------------------------------------------')
+
+# get historical market data
+ticker_history = yf_ticker.history(interval="1h", start=start_date, end=dt.datetime.now())
+print(f"Amount of prices: {len(ticker_history)}")
 opening = ticker_history['Open']
 
 #We can not loop through a time stamp so saved the time stamp as a string and entered it into a new dic to loop through
@@ -60,20 +84,16 @@ print('---------------------------------------------')
 #These two variables set the times you want to plan for. earlier_time example spy930, later_time example spy1030.
 #This is so we can change the times in one location isntead of change the entire code
 #Note: If the current time is not past the ticker time you would like, you will recieve an error.
-earlier_time = time_930
-later_time = time_1030
+
 
 
 
 #Finding the difference between 9:30 and 10:30 then entering those dif into a list
-difference = []
-trades = []
 for i in range(len(earlier_time)):
     diff = later_time[i] - earlier_time[i]
     difference.append(diff)
 
 #Finding the days where spy dropped a dollar from 9:30 to 10:30 and enter those into a new list
-days_to_hold = []
 for days in range(len(difference)):
     if difference[days] <= -1:
         trades.append(difference[days])
@@ -84,15 +104,7 @@ print('Amount of differences:', len(difference))
 print('Total trades:', len(trades))
 
 #looping through the days_to_hold list to find a startegy
-wins = 0
-losses = 0
-wins_profit = 0
-lost_money = 0
-loss_streak = []
-win_streak = []
-win_streak_counter = 0
-loss_steak_counter = 0
-added_days = 2
+
 
 
 for day in days_to_hold:
