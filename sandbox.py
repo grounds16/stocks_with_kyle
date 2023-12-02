@@ -2,7 +2,6 @@ import yfinance as yf
 import datetime as dt
 from yahoo_fin.stock_info import *
 
-#commit meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
 #ticker varibale
 ticker = 'SPY' #We can search for any ticker using this variable
