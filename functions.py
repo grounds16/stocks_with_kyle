@@ -277,47 +277,64 @@ class Functions:
     
     #you can clean if you want lawl
     
-    
+    #honestly not a double bottom strat its a strat that buys option contract only if stock price at open(09:30) is >= close same day at 11:30
+    #buys 1 day out contract then sells at 14:30 or 2:30 open only if the differeve
     def double_bottom(self,stock_history, start_cash= 1000):
         start = start_cash
-        tally =0
+        trades_dif = []
+        wining_trade_streak=0
+        losing_trade_streak=0
+        temp=0
+        temp1=0
         profit=0
         loses = 0
         winnings = 0
         winners=[]
+        losers=[]
         trades_found=[]
         index_list=[]
-        temp = stock_history['09:30']['open'][0]
         time = ['09:30','10:30','11:30','12:30','13:30','14:30','15:30']
-        #loops through stock history and compares open 930 withsame day but at 1030 close price then stores the index val in index list
+        #loops through stock history and compares open 930 and sees if same day at 1030 close price is less than 930 open then add 1030 close price to index list
         try:
             for i in range(len(stock_history[time[0]]['open'])):
-                if stock_history[time[0]]['open'][i] > stock_history[time[1]]['close'][i] and stock_history[time[0]]['open'][i] >= temp:
-                    temp  = stock_history[time[0]]['open'][i]
+                if stock_history[time[0]]['open'][i] >= stock_history[time[2]]['close'][i]:
                     index_list.append(i)
                 else:
                     pass
         except:
             pass
-        # loops through the index list and checks the price difference days after buy signal at 1030 open
+        # loops through the index list and checks the price difference days after buy signal at 1030 close and looks to see if price at 14:30 goes up at least 2
         for i in index_list:
             try:
-                total= float(stock_history['10:30']['close'][i])-float(stock_history['09:30']['open'][i+2])
-                if total > 0.00:
+                total= float(stock_history['11:30']['close'][i])-float(stock_history['14:30']['open'][i])
+                if total > 2.00:
+                    trades_found.append(round(float(total),2)*75)
+                    #trades_dif.append(total)
+                    temp+=1
+                    temp1 = 0
                     # adds trade to list only if it profited more than 0 dollars in 2 days
-                    trades_found.append(round(float(total),2)*60)
+                    if temp > wining_trade_streak:
+                        wining_trade_streak = temp
+                        
+                # check if price loses -1 before 14:30 then triggers stop loss 
+                elif total < -1.00:
+                    temp1+=1
+                    temp = 0
+                    if temp1 > losing_trade_streak:
+                        losing_trade_streak = temp1
+                #if its between 2 and -1 then sells at 14:30 no matter what and stores in trades found to calc
                 else:
-                    #just tallys up the loses
-                    tally+=1
-                    loses=loses + 120
+                    trades_found.append(round(float(total),2)*80)
+                    
             except:
                 pass
         #loops through the trades that made profit and adds them all up and subracts for total winnings then subracts loses from wins to get profits
         for i in trades_found:
             winners.append(i)
             profit = profit + i 
-        winnings = start + (profit-loses)    
+        winnings = start + (profit-loses)
+       
         
-        return round(float(winnings),2), loses, start, winners, tally
+        return round(float(winnings),2),losing_trade_streak, wining_trade_streak, losing_trade_streak * 80, trades_found
     
     

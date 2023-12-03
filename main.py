@@ -75,7 +75,5 @@ class Stocks:
     print(f'Biggest losing streak: {max(results["loss_streak"])}')
     print(f'Biggest wining streak: {max(results["win_streak"])}')
     print('Profits/loses: $', round(float(results["wins_profit"] + results["lost_money"]),2))
-    print(f'Double bottom : winnings ${double_bottom_strategy[0]}, loses: $-{double_bottom_strategy[1]}, start: ${double_bottom_strategy[2]}')
-    print(f'Double bottom : wins total in list: {len(double_bottom_strategy[3])}, loses total in list: {double_bottom_strategy[4]}')
-
-
+    print(f'Double bottom : winnings ${double_bottom_strategy[0]}, loses: $-{double_bottom_strategy[3]}, start: ${start_cash}')
+    print(f'Double bottom : biggest winning streak: {double_bottom_strategy[2]}, biggest losing streak: {double_bottom_strategy[1]}, max amount of money lost before winning: ${double_bottom_strategy[3]}')
