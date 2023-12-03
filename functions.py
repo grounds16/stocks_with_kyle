@@ -302,7 +302,7 @@ class Functions:
         # loops through the index list and checks the price difference days after buy signal at 1030 open
         for i in index_list:
             try:
-                total= float(stock_history['09:30']['open'][i])-float(stock_history['10:30']['open'][i+2])
+                total= float(stock_history['10:30']['close'][i])-float(stock_history['09:30']['open'][i+2])
                 if total > 0.00:
                     # adds trade to list only if it profited more than 0 dollars in 2 days
                     trades_found.append(round(float(total),2)*60)
