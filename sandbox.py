@@ -140,4 +140,3 @@ print(earlier_time)
 print(time_dic[earlier_time]['dates'])
 print(diff_list)
 
-
